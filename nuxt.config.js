@@ -5,7 +5,8 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'Sorting visualizer',
+
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -14,6 +15,15 @@ module.exports = {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
+  },
+  router: {
+    extendRoutes(routes, resolve) {
+      routes.push({
+        name: 'Main',
+        path: '/',
+        component: resolve(__dirname, 'pages/Main.vue')
+      })
+    }
   },
   /*
   ** Customize the progress-bar color

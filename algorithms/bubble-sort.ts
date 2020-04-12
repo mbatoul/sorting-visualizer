@@ -1,4 +1,4 @@
-function bubbleSort (array: Number[]) {
+function bubbleSort (array: number[]) {
 
 }
 
