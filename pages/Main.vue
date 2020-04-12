@@ -33,6 +33,11 @@
           >
             Heap sort
           </button>
+          <button
+            class="bg-blue-500 text-white font-bold py-2 px-4 border-b-4 border-blue-700 rounded opacity-50 cursor-not-allowed"
+          >
+            Insertion sort
+          </button>
         </div>
       </div>
     </div>
@@ -45,6 +50,12 @@
         v-bind:style="{ 'height': `${element}%` }"
         v-bind:class='barColor(index)'
       >
+      </div>
+    </div>
+
+    <div id="footer-wrapper" class='w-full h-24 bg-white'>
+      <div id="footer" class='flex justify-center items-center h-full'>
+        <p class='text-gray-500'>This project was made by <a href='https://github.com/mbatoul/' class='underline text-blue-500 hover:no-underline' target='_blank'>Mathis Batoul</a> with <span class='text-gray-600 font-bold'>NuxtJS</span>, <span class="text-gray-600 font-bold">Typescript</span> and <span class="text-gray-600 font-bold">TailwindCSS</span>.</p>
       </div>
     </div>
   </div>
@@ -120,12 +131,14 @@ export default Vue.extend({
     },
 
     barColor: function (index: number): string {
-      if (index === this.currentBubble) {
-        return 'bg-red-300';
+      if (this.currentSorted.includes(index)) {
+        return 'bg-green-500';
+      } else if (index === this.currentBubble) {
+        return 'bg-red-500';
       } else if (index === this.nextBubble) {
-        return 'bg-blue-500';
+        return 'bg-green-500';
       } else {
-        return 'bg-gray-600';
+        return 'bg-blue-500';
       }
     },
 
