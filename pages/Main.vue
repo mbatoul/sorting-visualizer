@@ -135,10 +135,10 @@ export default Vue.extend({
 
     insertionSort: async function () {
       for (let i = 1; i < this.arrayOfBars.length; i++) {
-        this.pointerOne = i;
         let j = i;
         let newArray: number[] = this.arrayOfBars;
         while (j > 0 && newArray[j] < newArray[j - 1]) {
+          this.pointerOne = j;
           this.pointerTwo = j - 1;
           const tmp = newArray[j];
           newArray[j] = newArray[j - 1];
