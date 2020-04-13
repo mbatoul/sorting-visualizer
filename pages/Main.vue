@@ -19,6 +19,12 @@
             Bubble sort
           </button>
           <button
+            class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+            v-on:click="startSort('insertion')"
+          >
+            Insertion sort
+          </button>
+          <button
             class="bg-blue-500 text-white font-bold py-2 px-4 border-b-4 border-blue-700 rounded opacity-50 cursor-not-allowed"
           >
             Merge sort
@@ -32,11 +38,6 @@
             class="bg-blue-500 text-white font-bold py-2 px-4 border-b-4 border-blue-700 rounded opacity-50 cursor-not-allowed"
           >
             Heap sort
-          </button>
-          <button
-            class="bg-blue-500 text-white font-bold py-2 px-4 border-b-4 border-blue-700 rounded opacity-50 cursor-not-allowed"
-          >
-            Insertion sort
           </button>
         </div>
       </div>
@@ -71,9 +72,8 @@ export default Vue.extend({
     return {
       numberOfBars: <number> 50,
       arrayOfBars: <number[]> [],
-      currentSorted: <number[]> [],
-      currentBubble: <any> null,
-      nextBubble: <any> null,
+      pointerOne: <any> null,
+      pointerTwo: <any> null,
     }
   },
 
@@ -89,8 +89,8 @@ export default Vue.extend({
     },
 
     generateBars: function () {
-      this.currentBubble = null;
-      this.nextBubble = null;
+      this.pointerOne = null;
+      this.pointerTwo = null;
       this.numberOfBars = this.randomNumberBetween(5, 200);
       const array: number[] = [];
       for (let i = 0; i < this.numberOfBars; i++) {
@@ -104,6 +104,7 @@ export default Vue.extend({
     startSort: function (algorithm: string) {
       switch (algorithm) {
         case 'bubble': this.bubbleSort();
+        case 'insertion': this.insertionSort();
       }
     },
 
@@ -113,8 +114,8 @@ export default Vue.extend({
       while (!isSorted) {
         isSorted = true;
         for (let i = 0; i < this.arrayOfBars.length - 1 - counter; i++) {
-          this.currentBubble = i;
-          this.nextBubble = i + 1;
+          this.pointerOne = i;
+          this.pointerTwo = i + 1;
           let newArray: number[] = this.arrayOfBars;
           if (this.arrayOfBars[i] > this.arrayOfBars[i + 1]) {
             const tmp = newArray[i];
@@ -128,14 +129,34 @@ export default Vue.extend({
         }
         counter += 1;
       }
+      this.pointerOne = null;
+      this.pointerTwo = null;
+    },
+
+    insertionSort: async function () {
+      for (let i = 1; i < this.arrayOfBars.length; i++) {
+        let j = i;
+        let newArray: number[] = this.arrayOfBars;
+        while (j > 0 && newArray[j] < newArray[j - 1]) {
+          this.pointerOne = j;
+          this.pointerTwo = j - 1;
+          const tmp = newArray[j];
+          newArray[j] = newArray[j - 1];
+          newArray[j - 1] = tmp;
+          j -= 1;
+          this.arrayOfBars = [];
+          this.arrayOfBars = newArray;
+          await this.timer(this.delay);
+        }
+      }
+      this.pointerOne = null;
+      this.pointerTwo = null;
     },
 
     barColor: function (index: number): string {
-      if (this.currentSorted.includes(index)) {
-        return 'bg-green-500';
-      } else if (index === this.currentBubble) {
+      if (index === this.pointerOne) {
         return 'bg-red-500';
-      } else if (index === this.nextBubble) {
+      } else if (index === this.pointerTwo) {
         return 'bg-green-500';
       } else {
         return 'bg-blue-500';
