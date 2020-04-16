@@ -38,6 +38,10 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '~/plugins/utils.ts',
+    '~/plugins/bubble-sort.ts',
+    '~/plugins/insertion-sort.ts',
+    '~/plugins/selection-sort.ts'
   ],
   /*
   ** Nuxt.js dev-modules

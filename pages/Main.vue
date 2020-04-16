@@ -5,24 +5,30 @@
         <div class='flex'>
           <button
             class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mr-1"
-            v-on:click='generateBars'
+            v-on:click='randomizeBars()'
           >
-            Generate bars
+            Randomize bars
           </button>
         </div>
 
         <div>
           <button
             class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
-            v-on:click="startSort('bubble')"
+            v-on:click="$bubbleSort()"
           >
             Bubble sort
           </button>
           <button
             class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
-            v-on:click="startSort('insertion')"
+            v-on:click="$insertionSort()"
           >
             Insertion sort
+          </button>
+          <button
+            class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+            v-on:click="$selectionSort()"
+          >
+            Selection sort
           </button>
           <button
             class="bg-blue-500 text-white font-bold py-2 px-4 border-b-4 border-blue-700 rounded opacity-50 cursor-not-allowed"
@@ -64,112 +70,34 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import store from "@/store";
 
 export default Vue.extend({
   name: 'Main',
 
-  data: function () {
-    return {
-      numberOfBars: <number> 50,
-      arrayOfBars: <number[]> [],
-      pointerOne: <any> null,
-      pointerTwo: <any> null,
-    }
-  },
-
   computed: {
-    delay: function (): number {
-      return 1 / this.numberOfBars * 5;
-    }
+    arrayOfBars: function(): number[] {
+      return this.$store.state.arrayOfBars;
+    },
   },
 
   methods: {
-    randomNumberBetween: function (min: number, max: number): number {
-      return Math.floor(Math.random() * (max - min + 1) + min);
+    randomizeBars: function (): void {
+      this.$store.commit('randomizeBars');
     },
-
-    generateBars: function () {
-      this.pointerOne = null;
-      this.pointerTwo = null;
-      this.numberOfBars = this.randomNumberBetween(5, 200);
-      const array: number[] = [];
-      for (let i = 0; i < this.numberOfBars; i++) {
-        const value: number = this.randomNumberBetween(10, 100); 
-        array.push(value);
-      }
-      this.arrayOfBars = [];
-      this.arrayOfBars = array;
-    },
-
-    startSort: function (algorithm: string) {
-      switch (algorithm) {
-        case 'bubble': this.bubbleSort();
-        case 'insertion': this.insertionSort();
-      }
-    },
-
-    bubbleSort: async function () {
-      let isSorted: boolean = false;
-      let counter: number = 0;
-      while (!isSorted) {
-        isSorted = true;
-        for (let i = 0; i < this.arrayOfBars.length - 1 - counter; i++) {
-          this.pointerOne = i;
-          this.pointerTwo = i + 1;
-          let newArray: number[] = this.arrayOfBars;
-          if (this.arrayOfBars[i] > this.arrayOfBars[i + 1]) {
-            const tmp = newArray[i];
-            newArray[i] = newArray[i + 1];
-            newArray[i + 1] = tmp;
-            isSorted = false;
-          }
-          this.arrayOfBars = [];
-          this.arrayOfBars = newArray;
-          await this.timer(this.delay);
-        }
-        counter += 1;
-      }
-      this.pointerOne = null;
-      this.pointerTwo = null;
-    },
-
-    insertionSort: async function () {
-      for (let i = 1; i < this.arrayOfBars.length; i++) {
-        let j = i;
-        let newArray: number[] = this.arrayOfBars;
-        while (j > 0 && newArray[j] < newArray[j - 1]) {
-          this.pointerOne = j;
-          this.pointerTwo = j - 1;
-          const tmp = newArray[j];
-          newArray[j] = newArray[j - 1];
-          newArray[j - 1] = tmp;
-          j -= 1;
-          this.arrayOfBars = [];
-          this.arrayOfBars = newArray;
-          await this.timer(this.delay);
-        }
-      }
-      this.pointerOne = null;
-      this.pointerTwo = null;
-    },
-
     barColor: function (index: number): string {
-      if (index === this.pointerOne) {
+      if (index === this.$store.state.pointerOne) {
         return 'bg-green-500';
-      } else if (index === this.pointerTwo) {
+      } else if (index === this.$store.state.pointerTwo) {
         return 'bg-red-500';
       } else {
         return 'bg-blue-500';
       }
     },
-
-    timer: function (ms: number): Promise<void> {
-      return new Promise(res => setTimeout(res, ms));
-    }
   },
 
-  mounted: function () {
-    this.generateBars();
+  mounted: function (): void {
+    this.randomizeBars();
   }
 })
 </script>
