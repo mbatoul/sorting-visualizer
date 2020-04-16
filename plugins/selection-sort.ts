@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { timer, delayInMs } from '~/plugins/utils';
+import { timer, delayInMs, swap } from '~/plugins/utils';
 
 declare module 'vue/types/vue' {
   interface Vue {
@@ -9,11 +9,11 @@ declare module 'vue/types/vue' {
 
 Vue.prototype.$selectionSort = async function () {
   let newArray: number[] = this.$store.state.arrayOfBars;
-  let startIdx = 0;
+  let startIdx: number = 0;
   while (startIdx < newArray.length - 1) {
-    let smallestIdx = startIdx;
+    let smallestIdx: number = startIdx;
     this.$store.dispatch('setPointerOne', smallestIdx);
-    for (let i = startIdx + 1; i < newArray.length; i++) {
+    for (let i: number = startIdx + 1; i < newArray.length; i++) {
       this.$store.dispatch('setPointerTwo', i);
       if (newArray[smallestIdx] > newArray[i]) {
         smallestIdx = i;
@@ -22,9 +22,7 @@ Vue.prototype.$selectionSort = async function () {
       this.$store.dispatch('replaceArrayOfBars', newArray);
       await timer(delayInMs(this.$store.state.numberOfBars));
     }
-    const tmp = newArray[smallestIdx];
-    newArray[smallestIdx] = newArray[startIdx];
-    newArray[startIdx] = tmp;
+    swap(smallestIdx, startIdx, newArray);
     startIdx++;
   }
 }

@@ -1,5 +1,3 @@
-import Vue from 'vue';
-
 declare module 'vue/types/vue' {
   interface Vue {
     $timer(ms: number): Promise<void>,
@@ -18,4 +16,10 @@ export const delayInMs = function (numberOfBars: number): number {
 
 export const randomNumberBetween = function (min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+export const swap = function (i: number, j: number, array: number[]): void {
+  const tmp: number = array[i];
+  array[i] = array[j];
+  array[j] = tmp;
 }
