@@ -1,5 +1,5 @@
 import Vuex from 'vuex';
-import { randomNumberBetween } from '~/plugins/utils';
+import { numberOfBars, randomNumberBetween } from '~/plugins/utils';
 
 const createStore = () => {
   return new Vuex.Store({
@@ -8,7 +8,6 @@ const createStore = () => {
       pointerOne: <any> null,
       pointerTwo: <any> null,
       pivot: <any> null,
-      numberOfBars: <number> 50,
     },
   
     mutations: {
@@ -25,9 +24,8 @@ const createStore = () => {
         state.pivot = index;
       },
       randomizeBars: function (state): void {
-        state.numberOfBars = randomNumberBetween(5, 200);
         const array: number[] = [];
-        for (let i = 0; i < state.numberOfBars; i++) {
+        for (let i = 0; i < numberOfBars; i++) {
           const value: number = randomNumberBetween(10, 100);
           array.push(value);
         }

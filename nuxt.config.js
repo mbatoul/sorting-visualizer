@@ -41,7 +41,10 @@ module.exports = {
     '~/plugins/utils.ts',
     '~/plugins/bubble-sort.ts',
     '~/plugins/insertion-sort.ts',
-    '~/plugins/selection-sort.ts'
+    '~/plugins/selection-sort.ts',
+    '~/plugins/quick-sort.ts',
+    '~/plugins/merge-sort.ts',
+    '~/plugins/heap-sort.ts'
   ],
   /*
   ** Nuxt.js dev-modules

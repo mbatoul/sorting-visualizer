@@ -13,35 +13,38 @@
 
         <div>
           <button
-            class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+            v-bind:class='algoButtonClasses()'
             v-on:click="$bubbleSort()"
           >
             Bubble sort
           </button>
           <button
-            class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+            v-bind:class='algoButtonClasses()'
             v-on:click="$insertionSort()"
           >
             Insertion sort
           </button>
           <button
-            class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+            v-bind:class='algoButtonClasses()'
             v-on:click="$selectionSort()"
           >
             Selection sort
           </button>
           <button
-            class="bg-blue-500 text-white font-bold py-2 px-4 border-b-4 border-blue-700 rounded opacity-50 cursor-not-allowed"
+            v-bind:class='algoButtonClasses()'
+            v-on:click="$mergeSort()"
           >
             Merge sort
           </button>
           <button
-            class="bg-blue-500 text-white font-bold py-2 px-4 border-b-4 border-blue-700 rounded opacity-50 cursor-not-allowed"
+            v-bind:class='algoButtonClasses()'
+            v-on:click="$quickSort()"
           >
             Quick sort
           </button>
           <button
-            class="bg-blue-500 text-white font-bold py-2 px-4 border-b-4 border-blue-700 rounded opacity-50 cursor-not-allowed"
+            v-bind:class='algoButtonClasses()'
+            v-on:click="$heapSort()"
           >
             Heap sort
           </button>
@@ -94,6 +97,9 @@ export default Vue.extend({
         return 'bg-blue-500';
       }
     },
+    algoButtonClasses: function(): string {
+      return 'bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded'
+    }
   },
 
   mounted: function (): void {

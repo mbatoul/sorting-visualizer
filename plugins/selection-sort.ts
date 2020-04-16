@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { timer, delayInMs, swap } from '~/plugins/utils';
+import { timer, delayInMs, swap, numberOfBars } from '~/plugins/utils';
 
 declare module 'vue/types/vue' {
   interface Vue {
@@ -20,9 +20,12 @@ Vue.prototype.$selectionSort = async function () {
       }
       this.$store.dispatch('replaceArrayOfBars', []);
       this.$store.dispatch('replaceArrayOfBars', newArray);
-      await timer(delayInMs(this.$store.state.numberOfBars));
+      await timer(delayInMs(numberOfBars));
     }
     swap(smallestIdx, startIdx, newArray);
     startIdx++;
   }
+  this.$store.dispatch('replaceArrayOfBars', []);
+  this.$store.dispatch('replaceArrayOfBars', newArray);
+  await timer(delayInMs(numberOfBars));
 }

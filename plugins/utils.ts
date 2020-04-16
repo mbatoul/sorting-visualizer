@@ -23,3 +23,5 @@ export const swap = function (i: number, j: number, array: number[]): void {
   array[i] = array[j];
   array[j] = tmp;
 }
+
+export const numberOfBars = 100;

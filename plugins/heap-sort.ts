@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { timer, delayInMs, swap } from '~/plugins/utils';
+import { timer, delayInMs, swap, numberOfBars } from '~/plugins/utils';
 
 declare module 'vue/types/vue' {
   interface Vue {
@@ -13,5 +13,5 @@ Vue.prototype.$heapSort = async function () {
   this.$store.dispatch('setPointerTwo', null);
   this.$store.dispatch('replaceArrayOfBars', []);
   await this.$store.dispatch('replaceArrayOfBars', newArray);
-  await timer(delayInMs(this.$store.state.numberOfBars));
+  await timer(delayInMs(numberOfBars));
 }
