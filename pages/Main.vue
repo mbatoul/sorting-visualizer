@@ -4,51 +4,27 @@
       <div id="navbar" class='p-4 h-full flex justify-between'>
         <div class='flex'>
           <button
-            class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mr-1"
+            v-bind:class='randomizeBarsButtonClasses()'
             v-on:click='randomizeBars()'
           >
             Randomize bars
           </button>
         </div>
-
-        <div>
-          <button
-            v-bind:class='algoButtonClasses()'
-            v-on:click="$bubbleSort()"
+        <div class='flex'>
+          <div
+            class="mr-2"
+            v-for='(algorithm, index) in algorithms'
+            v-bind:key='index'
           >
-            Bubble sort
-          </button>
-          <button
-            v-bind:class='algoButtonClasses()'
-            v-on:click="$insertionSort()"
-          >
-            Insertion sort
-          </button>
-          <button
-            v-bind:class='algoButtonClasses()'
-            v-on:click="$selectionSort()"
-          >
-            Selection sort
-          </button>
-          <button
-            v-bind:class='algoButtonClasses()'
-            v-on:click="$mergeSort()"
-          >
-            Merge sort
-          </button>
-          <button
-            v-bind:class='algoButtonClasses()'
-            v-on:click="$quickSort()"
-          >
-            Quick sort
-          </button>
-          <button
-            v-bind:class='algoButtonClasses()'
-            v-on:click="$heapSort()"
-          >
-            Heap sort
-          </button>
+            <button
+              v-bind:class='algoButtonClasses()'
+              v-on:click="startSorting(algorithm)"
+            >
+              {{ algorithm }} sort
+            </button>
+          </div>
         </div>
+
       </div>
     </div>
 
@@ -74,6 +50,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import store from "@/store";
+import { timer, delayInMs, swap, numberOfBars } from '~/plugins/utils';
 
 export default Vue.extend({
   name: 'Main',
@@ -82,23 +59,77 @@ export default Vue.extend({
     arrayOfBars: function(): number[] {
       return this.$store.state.arrayOfBars;
     },
+    algorithms: function(): number[] {
+      return this.$store.state.algorithms;
+    },
   },
 
   methods: {
+    resetPointers: function (): void {
+      this.$store.dispatch('setPointerOne', null);
+      this.$store.dispatch('setPointerTwo', null);
+    },
     randomizeBars: function (): void {
-      this.$store.commit('randomizeBars');
+      if (this.$store.state.isRunning) return;
+      
+      this.$store.dispatch('replaceSortedArray', []);
+      this.$store.dispatch('randomizeBars');
     },
     barColor: function (index: number): string {
       if (index === this.$store.state.pointerOne) {
-        return 'bg-green-500';
-      } else if (index === this.$store.state.pointerTwo) {
         return 'bg-red-500';
+      } else if (index === this.$store.state.pointerTwo) {
+        return 'bg-green-500';
+      } else if (this.$store.state.sortedArray.includes(index)) {
+        return 'bg-pink-500';
       } else {
         return 'bg-blue-500';
       }
     },
     algoButtonClasses: function(): string {
-      return 'bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded'
+      if (this.$store.state.isRunning) {
+        return 'bg-blue-500 text-white font-bold py-2 px-4 rounded opacity-50 cursor-not-allowed';
+      } else {
+        return 'bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded';
+      }
+    },
+    randomizeBarsButtonClasses: function (): string {
+      if (this.$store.state.isRunning) {
+        return 'bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mr-1 opacity-50 cursor-not-allowed';
+      } else {
+        return 'bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mr-1';
+      }
+    },
+    startSorting: async function (algorithm: string): Promise<void> {
+      if (this.$store.state.isRunning) return;
+
+      this.$store.dispatch('toggleIsRunning');
+      switch(algorithm) {
+        case 'bubble':
+          await this.$bubbleSort();
+          break;
+        case 'insertion':
+          await this.$insertionSort();
+          break;
+        case 'selection':
+          await this.$selectionSort();
+          break;
+        case 'merge':
+          await this.$mergeSort();
+          break;
+        case 'quick':
+          await this.$quickSort();
+          break;
+        case 'heap':
+          await this.$heapSort();
+          break;
+      }
+      this.resetPointers();
+      for (let i = this.$store.state.arrayOfBars.length; i >= 0; i--) {
+        this.$store.dispatch('addToSortedArray', i);
+        await timer(delayInMs(numberOfBars));
+      }
+      this.$store.dispatch('toggleIsRunning');
     }
   },
 

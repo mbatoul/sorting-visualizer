@@ -11,7 +11,7 @@ export const timer = function (ms: number): Promise<void> {
 }
 
 export const delayInMs = function (numberOfBars: number): number {
-  return 1 / numberOfBars * 10;
+  return 0.5;
 }
 
 export const randomNumberBetween = function (min: number, max: number): number {
@@ -24,4 +24,4 @@ export const swap = function (i: number, j: number, array: number[]): void {
   array[j] = tmp;
 }
 
-export const numberOfBars = 100;
+export const numberOfBars = 70;
