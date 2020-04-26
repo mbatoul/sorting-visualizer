@@ -68,6 +68,7 @@ export default Vue.extend({
     resetPointers: function (): void {
       this.$store.dispatch('setPointerOne', null);
       this.$store.dispatch('setPointerTwo', null);
+      this.$store.dispatch('setPivot', null);
     },
     randomizeBars: function (): void {
       if (this.$store.state.isRunning) return;
@@ -76,7 +77,9 @@ export default Vue.extend({
       this.$store.dispatch('randomizeBars');
     },
     barColor: function (index: number): string {
-      if (index === this.$store.state.pointerOne) {
+      if (index === this.$store.state.pivot) {
+        return 'bg-yellow-500';
+      } else if (index === this.$store.state.pointerOne) {
         return 'bg-red-500';
       } else if (index === this.$store.state.pointerTwo) {
         return 'bg-green-500';
@@ -125,10 +128,6 @@ export default Vue.extend({
           break;
       }
       this.resetPointers();
-      for (let i = this.$store.state.arrayOfBars.length; i >= 0; i--) {
-        this.$store.dispatch('addToSortedArray', i);
-        await timer(delayInMs(numberOfBars));
-      }
       this.$store.dispatch('toggleIsRunning');
     }
   },

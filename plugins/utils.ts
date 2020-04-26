@@ -24,4 +24,4 @@ export const swap = function (i: number, j: number, array: number[]): void {
   array[j] = tmp;
 }
 
-export const numberOfBars = 70;
+export const numberOfBars = 200;
