@@ -1,8 +1,12 @@
-# sorting-visualizer
+# Sorting visualizer
 
 > Visualization tool for sorting algorithms
 
-## Build Setup
+## Description
+
+This is a simple web app allowing to watch several sorting algorithms in action.
+
+## Setup
 
 ```bash
 # install dependencies
@@ -18,5 +22,3 @@ $ yarn start
 # generate static project
 $ yarn generate
 ```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
